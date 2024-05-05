@@ -1,0 +1,31 @@
+.scrolling-skill-bar {
+  overflow-x: hidden;
+  white-space: nowrap;
+}
+
+.skill-container {
+  display: flex;
+  animation: scrollX 10s linear infinite;
+}
+
+.scrolling-skill-bar .skill-container.paused {
+  animation-play-state: paused;
+}
+
+.skill {
+  margin-right: 10px;
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f5f5f5;
+}
+
+@keyframes scrollX {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
