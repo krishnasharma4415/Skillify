@@ -1,6 +1,8 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
 import { useState } from "react";
+import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -9,6 +11,22 @@ const Login = () => {
   const [activeForm, setActiveForm] = useState("login");
   const [buttonText, setButtonText] = useState("Claim your link: Skillify/");
   const [showSignupDetails, setShowSignupDetails] = useState(false);
+  
+  const schema = yup.object().shape({
+    email: yup.string().email('Invalid email format').required('Email is required'),
+    password: yup.string().required('Password is required').min(6, 'Password must be at least 6 characters')
+    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/, 'Password must contain at least one lowercase letter, one uppercase letter, one number, and one special symbol'),
+    username: yup.string().required('Username is required').min(3, 'Username must be at least 3 characters'),
+  });
+  
+  const {register,handleSubmit,formState: { errors },} = useForm({
+    defaultValues: {
+      email: '',
+      password: '',
+      username: '',
+    },
+    resolver: yupResolver(schema),
+  });
 
   const handleSignupClick = () => {
     setActiveForm("signup");
@@ -16,12 +34,6 @@ const Login = () => {
   const handleLoginClick = () => {
     setActiveForm("login");
   };
-
-  // const handleSubmit = (event) => {
-  //     event.preventDefault();
-  //     // Handle login logic here (e.g., send login request to backend)
-  //     console.log('Login:', username, password);
-  // };
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -39,7 +51,7 @@ const Login = () => {
     setPassword(event.target.value);
   };
 
-  const handleSubmit = async (event) => {
+  const handleFormSubmit = async (event) => {
     event.preventDefault();
 
     const newUser = {
@@ -49,8 +61,6 @@ const Login = () => {
       password,
     };
 
-    // setUsers([...users, newUser]);
-    // Pass the new user object (without password) to UserList component (assuming connection)
     setUsername("");
     setEmail("");
     setPassword("");
@@ -63,11 +73,10 @@ const Login = () => {
   const handleEmailPasswordSignup = async (event) => {
     event.preventDefault();
     console.log("Email/password sign-up:", { username, email, password });
-    // Implement your backend logic for email/password sign-up
   };
 
   const handleGoogleSignup = () => {
-    console.log("Google sign-up initiated");
+    console.log("sign-up initiated");
     // Implement your logic for Google sign-up
   };
 
@@ -144,7 +153,7 @@ const Login = () => {
 
           {!showSignupDetails && (
             <div className="mt-10  rounded-lg">
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleFormSubmit}>
                 <div className="flex border border-gray-700 rounded-xl py-1 text-white text-sm font-normal font-['Inter'] mx-20">
                   <div className="pl-2 content-center text-white text-base font-normal font-['Inter'] ">
                     Skillify/
@@ -156,6 +165,7 @@ const Login = () => {
                     value={username}
                     onChange={handleUsernameChange}
                   />
+                  {errors.username && <p className="text-red-500">{errors.username.message}</p>}
                 </div>
                 <button
                   className="py-2 px-2 mt-3 mx-auto bg-blue-700 hover:bg-blue-900 text-white font-bold rounded-lg shadow-md block"
@@ -177,6 +187,7 @@ const Login = () => {
                     value={email}
                     onChange={handleEmailChange}
                   />
+                  {errors.email && <p className="text-red-500">{errors.email.message}</p>}
                   <input
                     type="password"
                     class="p-3 bg-gray-200 text-gray-700 text-base font-normal font-inter placeholder-gray-500 rounded-lg mt-4"
@@ -184,12 +195,13 @@ const Login = () => {
                     value={password}
                     onChange={handlePasswordChange}
                   />
+                  {errors.password && <p className="text-red-500">{errors.password.message}</p>}
                 </div>
                 <button
                   class="py-2 px-4 w-full bg-[#0038FF] hover:bg-blue-800 text-white font-bold rounded-lg shadow-md mt-4"
                   onClick={handleGoogleSignup}
                 >
-                  Sign up with Google
+                  Sign up
                 </button>
               </form>
             </div>

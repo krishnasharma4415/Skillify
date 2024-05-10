@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Explore from './pages/Explore';
 import Profile from './pages/Profile';
+import SkillExchangePage from './pages/SkillExchange';
 import './App.css'
 
 function App() {
@@ -28,6 +29,10 @@ function App() {
     {
       path: "/profile",
       element: <><Profile /></>
+    },
+    {
+      path: "/skill",
+      element: <><SkillExchangePage /></>
     },
   ])
 

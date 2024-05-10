@@ -97,7 +97,7 @@ const Home = () => {
                     <h1 className="font-bold dark:text-white mr-0 pr-0 lg:text-5xl">Revolutionize Your <br /> <span className="text-[#0038FF] ">Learning</span> Journey</h1>
                     <p className='py-2 px-12 lg:mt-0 lg:w-1/2 dark:text-white'>
                         Start your skill exchange journey!  Find mentors & share your expertise.
-                        <NavLink to="/explore">
+                        <NavLink to="/skill">
                             <button className="items-center justify-center ml-40 px-5 py-2 mt-7 text-m tracking-wider font-bold text-white duration-300 bg-[#0038FF] rounded-full lg:w-auto hover:bg-blue-900">Browse Skills</button>
                         </NavLink>
                     </p>
