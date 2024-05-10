@@ -11,15 +11,15 @@ const Login = () => {
   const [activeForm, setActiveForm] = useState("login");
   const [buttonText, setButtonText] = useState("Claim your link: Skillify/");
   const [showSignupDetails, setShowSignupDetails] = useState(false);
-  
+
   const schema = yup.object().shape({
     email: yup.string().email('Invalid email format').required('Email is required'),
     password: yup.string().required('Password is required').min(6, 'Password must be at least 6 characters')
-    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/, 'Password must contain at least one lowercase letter, one uppercase letter, one number, and one special symbol'),
+      .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/, 'Password must contain at least one lowercase letter, one uppercase letter, one number, and one special symbol'),
     username: yup.string().required('Username is required').min(3, 'Username must be at least 3 characters'),
   });
-  
-  const {register,handleSubmit,formState: { errors },} = useForm({
+
+  const { register, handleSubmit, formState: { errors }, } = useForm({
     defaultValues: {
       email: '',
       password: '',
@@ -53,26 +53,79 @@ const Login = () => {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
+    setShowSignupDetails(true);
+  }
 
+  //const handleFormSubmit = async (event) => {
+  //  event.preventDefault();
+//
+  //  const newUser = {
+  //    username,
+  //    email,
+  //    password,
+  //  };
+//
+  //  try {
+  //    const response = await fetch('http://localhost:5000/api/users/signup', {
+  //      method: 'POST',
+  //      headers: {
+  //        'Content-Type': 'application/json'
+  //      },
+  //      body: JSON.stringify(newUser)
+  //    });
+//
+  //    if (!response.ok) {
+  //      throw new Error('Signup request failed');
+  //    }
+//
+  //    const responseData = await response.json();
+  //    console.log(responseData);
+  //    // Handle successful signup response
+  //    setUsername("");
+  //    setEmail("");
+  //    setPassword("");
+  //    
+  //  } catch (error) {
+  //    console.error('Error during signup:', error.message);
+  //    // Handle error during signup
+  //  }
+  //};
+
+
+  // Implement functions for email/password and Google sign-up (replace with your actual logic)
+  const handleEmailPasswordSignup = async (event) => {
+    event.preventDefault();
     const newUser = {
-      id: Math.random().toString(36).substring(2, 15),
+      id: "id121",
       username,
       email,
       password,
     };
 
-    setUsername("");
-    setEmail("");
-    setPassword("");
+    try {
+      const response = await fetch('http://localhost:5000/api/users/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newUser)
+      });
 
-    console.log("Username claimed successfully!");
-    setShowSignupDetails(true);
-  };
+      if (!response.ok) {
+        throw new Error('Signup request failed');
+      }
 
-  // Implement functions for email/password and Google sign-up (replace with your actual logic)
-  const handleEmailPasswordSignup = async (event) => {
-    event.preventDefault();
-    console.log("Email/password sign-up:", { username, email, password });
+      const responseData = await response.json();
+      console.log(responseData);
+      // Handle successful signup response
+      setUsername("");
+      setEmail("");
+      setPassword("");
+      setShowSignupDetails(true);
+    } catch (error) {
+      console.error('Error during signup:', error.message);
+      // Handle error during signup
+    }
   };
 
   const handleGoogleSignup = () => {
