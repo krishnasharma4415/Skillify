@@ -56,42 +56,6 @@ const Login = () => {
     setShowSignupDetails(true);
   }
 
-  //const handleFormSubmit = async (event) => {
-  //  event.preventDefault();
-//
-  //  const newUser = {
-  //    username,
-  //    email,
-  //    password,
-  //  };
-//
-  //  try {
-  //    const response = await fetch('http://localhost:5000/api/users/signup', {
-  //      method: 'POST',
-  //      headers: {
-  //        'Content-Type': 'application/json'
-  //      },
-  //      body: JSON.stringify(newUser)
-  //    });
-//
-  //    if (!response.ok) {
-  //      throw new Error('Signup request failed');
-  //    }
-//
-  //    const responseData = await response.json();
-  //    console.log(responseData);
-  //    // Handle successful signup response
-  //    setUsername("");
-  //    setEmail("");
-  //    setPassword("");
-  //    
-  //  } catch (error) {
-  //    console.error('Error during signup:', error.message);
-  //    // Handle error during signup
-  //  }
-  //};
-
-
   // Implement functions for email/password and Google sign-up (replace with your actual logic)
   const handleEmailPasswordSignup = async (event) => {
     event.preventDefault();
@@ -128,6 +92,37 @@ const Login = () => {
     }
   };
 
+  const handleEmailPasswordLogin = async (event) => {
+    event.preventDefault();
+    const loginData = {
+      email,
+      password,
+    };
+
+    try {
+      const response = await fetch('http://localhost:5000/api/users/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(loginData)
+      });
+
+      if (!response.ok) {
+        throw new Error('Login request failed');
+      }
+
+      const responseData = await response.json();
+      console.log(responseData);
+      // Handle successful login response
+      alert('Login successful!');
+    } catch (error) {
+      console.error('Error during login:', error.message);
+      // Handle error during login
+      alert('Login failed. Please check your credentials.');
+    }
+  };
+
   const handleGoogleSignup = () => {
     console.log("sign-up initiated");
     // Implement your logic for Google sign-up
@@ -143,50 +138,55 @@ const Login = () => {
           <div className="mt-5 text-white text-xl font-normal font-['Inter']">
             Good to have you back!
           </div>
-          <div className="flex mt-8">
-            <input
-              type="email"
-              onChange={handleEmailChange}
-              className="rounded-xl mr-3 px-3 py-2 text-gray-900 text-sm font-normal font-['Inter']"
-              placeholder="Email address"
-            />
-            <div>
+          <form onSubmit={handleEmailPasswordLogin}>
+            <div className="flex mt-8">
               <input
-                type="password"
+                type="email"
+                onChange={handleEmailChange}
                 className="rounded-xl mr-3 px-3 py-2 text-gray-900 text-sm font-normal font-['Inter']"
-                placeholder="Password"
+                placeholder="Email address"
               />
-              <button className="rounded-xl text-white text-m font-semibold font-['Inter'] underline hover:text-gray-300">
-                Show
-              </button>
+              <div>
+                <input
+                  type="password"
+                  value={password} // Add value attribute to capture the input value
+                  onChange={handlePasswordChange} // Add onChange event handler
+                  className="rounded-xl mr-3 px-3 py-2 text-gray-900 text-sm font-normal font-['Inter']"
+                  placeholder="Password"
+                />
+                <button className="rounded-xl text-white text-m font-semibold font-['Inter'] underline hover:text-gray-300">
+                  Show
+                </button>
+              </div>
             </div>
-          </div>
-          <button
-            type="reset"
-            className="pt-4 w-30 w-28 text-[#b1b1b1] text-sm font-normal font-['Inter'] underline leading-none"
-          >
-            Reset Password
-          </button>
-          <div className="pt-6 text-white text-center text-sm font-semibold font-['Inter']">
-            OR
-          </div>
-          <button
-            className="bg-[#163abbf0] flex rounded-lg mt-6 p-2 px-36 text-center text-white text-sm font-semibold leading-tight"
-            disabled={!isEmailFilled}
-          >
-            {isEmailFilled ? null : (
-              <img
-                src="./images/google.png"
-                alt="Google Logo"
-                className="mr-2 mt-0.5 h-6 w-6 align-middle justify-center"
-              />
-            )}
-            {isEmailFilled ? (
-              <p className="text-lg pl-14 text-center">Log in</p>
-            ) : (
-              <p className="text-lg">Sign in with Google</p>
-            )}
-          </button>
+            <button
+              type="reset"
+              className="pt-4 w-30 w-28 text-[#b1b1b1] text-sm font-normal font-['Inter'] underline leading-none"
+            >
+              Reset Password
+            </button>
+            <div className="pt-6 text-white text-center text-sm font-semibold font-['Inter']">
+              OR
+            </div>
+            <button
+              className="bg-[#163abbf0] flex rounded-lg mt-6 p-2 px-36 text-center text-white text-sm font-semibold leading-tight"
+              disabled={!isEmailFilled}
+              type="submit"
+            >
+              {isEmailFilled ? null : (
+                <img
+                  src="./images/google.png"
+                  alt="Google Logo"
+                  className="mr-2 mt-0.5 h-6 w-6 align-middle justify-center"
+                />
+              )}
+              {isEmailFilled ? (
+                <p className="text-lg pl-14 text-center">Log in</p>
+              ) : (
+                <p className="text-lg">Sign in with Google</p>
+              )}
+            </button>
+          </form>
           <div className=" pt-5 pb-10 text-center text-white text-sm font-normal font-['Inter'] leading-none">
             <button className="" onClick={handleSignupClick}>
               Not registered? Create account

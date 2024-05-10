@@ -197,14 +197,14 @@ function Profile() {
   };
 
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const [chatMessages, setChatMessages] = useState([]); // Add state for messages
+  const [chatMessages, setChatMessages] = useState([]);
 
   const handleChatClick = () => {
     setIsChatOpen(!isChatOpen);
   };
 
   const handleSendMessage = (message) => {
-    setChatMessages([...chatMessages, message]); // Update messages on send
+    setChatMessages([...chatMessages, message]);
   };
 
   return (

@@ -66,8 +66,8 @@ const SkillExchangePage = () => {
     ]);
 
 
-    const [searchQuery, setSearchQuery] = useState(''); // State to store search query
-    const [filteredSkills, setFilteredSkills] = useState(skills); // State for filtered skills
+    const [searchQuery, setSearchQuery] = useState('');
+    const [filteredSkills, setFilteredSkills] = useState(skills);
     const [sortBy, setSortBy] = useState('');
 
     const handleSearchChange = (event) => {
@@ -77,7 +77,7 @@ const SkillExchangePage = () => {
         setSortBy(event.target.value);
     };
 
-    const [skillDescriptions, setSkillDescriptions] = useState({}); // Object to store skill descriptions
+    const [skillDescriptions, setSkillDescriptions] = useState({});
 
     const handleViewDetailsClick = (skill) => {
         setSkillDescriptions({ ...skillDescriptions, [skill.id]: skill.description });
@@ -101,11 +101,11 @@ const SkillExchangePage = () => {
 
         const sortedSkills = sortSkills();
         setFilteredSkills(sortedSkills);
-    }, [sortBy, filteredSkills]); // Re-sort when sortBy or filteredSkills change
+    }, [sortBy, filteredSkills]);
 
     useEffect(() => {
         setFilteredSkills(skills.filter((skill) => skill.name.toLowerCase().includes(searchQuery)));
-    }, [searchQuery, skills]); // Re-filter when searchQuery or skills change
+    }, [searchQuery, skills]);
 
 
     return (
@@ -175,7 +175,7 @@ const SkillExchangePage = () => {
                                 <button className="text-sm text-blue-700 hover:text-blue-500"
                                     onClick={(event) => {
                                         handleViewDetailsClick(skill);
-                                        event.stopPropagation(); // Prevent event propagation
+                                        event.stopPropagation();
                                     }}>
                                     View Details
                                 </button>

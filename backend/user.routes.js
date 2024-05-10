@@ -16,18 +16,15 @@ router.post('/signup', async (req, res) => {
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
     try {
-        const user = await User.findOne({ email: "john.coder@example.com" });
-        console.log(user)
+        const user = await User.findOne({ email });
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-        
-        // Compare passwords directly
+
         if (user.password !== password) {
             return res.status(401).json({ message: 'Invalid password' });
         }
 
-        // If passwords match, login successful
         res.json({ message: 'Login successful!', user });
     } catch (err) {
         console.error(err);
