@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import userRoutes from './user.routes.js';
+import skillRoutes from './skill.routes.js';
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -18,5 +19,6 @@ mongoose.connect("mongodb://localhost:27017/SkillifyDatabase", {
 .catch(err => console.error(err));
 
 app.use('/api/users', userRoutes);
+app.use('/api', skillRoutes);
 
 app.listen(port, () => console.log(`Server listening on port ${port}`));
