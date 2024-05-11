@@ -2,9 +2,12 @@ import React from "react";
 import { useState } from "react";
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
+import { v4 as uuidv4 } from 'uuid';
+// import { useHistory } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 const Login = () => {
+  // const history = useHistory();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -60,7 +63,7 @@ const Login = () => {
   const handleEmailPasswordSignup = async (event) => {
     event.preventDefault();
     const newUser = {
-      id: "id121",
+      id: uuidv4(),
       username,
       email,
       password,
@@ -116,6 +119,8 @@ const Login = () => {
       console.log(responseData);
       // Handle successful login response
       alert('Login successful!');
+      // Redirect user to profile page
+      history.push('/profile'); // Redirect to profile page after successful login
     } catch (error) {
       console.error('Error during login:', error.message);
       // Handle error during login
@@ -138,7 +143,7 @@ const Login = () => {
           <div className="mt-5 text-white text-xl font-normal font-['Inter']">
             Good to have you back!
           </div>
-          <form onSubmit={handleEmailPasswordLogin}>
+          <form >
             <div className="flex mt-8">
               <input
                 type="email"
@@ -171,7 +176,7 @@ const Login = () => {
             <button
               className="bg-[#163abbf0] flex rounded-lg mt-6 p-2 px-36 text-center text-white text-sm font-semibold leading-tight"
               disabled={!isEmailFilled}
-              type="submit"
+              onClick={handleEmailPasswordLogin}
             >
               {isEmailFilled ? null : (
                 <img
@@ -187,6 +192,7 @@ const Login = () => {
               )}
             </button>
           </form>
+
           <div className=" pt-5 pb-10 text-center text-white text-sm font-normal font-['Inter'] leading-none">
             <button className="" onClick={handleSignupClick}>
               Not registered? Create account

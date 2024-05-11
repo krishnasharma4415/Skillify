@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Chat from "../components/Chat";
+// import { useHistory } from 'react-router-dom';
 import { IoIosChatbubbles } from "react-icons/io";
 import { FaInstagram, FaGithub, FaFacebook } from "react-icons/fa";
 
@@ -16,6 +17,13 @@ function Profile() {
   });
 
   const [editingThumbnail, setEditingThumbnail] = useState(null);
+
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  // const history = useHistory();
+  if (!isAuthenticated) {
+    history.push('/login');
+    return null;
+  }
 
   const [skillsList, setSkillsList] = useState([
     "JavaScript",
@@ -163,7 +171,7 @@ function Profile() {
               onChange={(e) => setEditContent(e.target.value)}
             />
           ) : (
-            <ul className="list-disc pl-4 text-gray-600">
+            <ul className="list-disc pl-4 text-white">
               {content.split('\n').map((item, index) => (
                 <li key={index} className="mb-2">
                   {item.trim()}
@@ -197,14 +205,14 @@ function Profile() {
   };
 
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const [chatMessages, setChatMessages] = useState([]);
+  const [chatMessages, setChatMessages] = useState([]); // Add state for messages
 
   const handleChatClick = () => {
     setIsChatOpen(!isChatOpen);
   };
 
   const handleSendMessage = (message) => {
-    setChatMessages([...chatMessages, message]);
+    setChatMessages([...chatMessages, message]); // Update messages on send
   };
 
   return (
@@ -264,7 +272,7 @@ function Profile() {
             </div>
           </div>
         </div>
-        <div className="w-2/3 h-[680px] bg-[#070A0E] border-gray">
+        <div className="w-2/3 h-[680px] overflow-y-scroll bg-[#070A0E] border-gray">
           <div className="flex h-80 justify-between m-4">
             <SkillThumbnail
               title="DesiredSkills"
@@ -287,6 +295,13 @@ function Profile() {
               title="Experience"
               content={profileData.experience}
               handleEditClick={(updatedExperience) => setProfileData((prevData) => ({ ...prevData, experience: updatedExperience }))}
+            />
+          </div>
+          <div className="m-4 h-80">
+            <Thumbnail
+              title="Projects"
+              content={profileData.projects}
+              handleEditClick={(updatedProjects) => setProfileData((prevData) => ({ ...prevData, projects: updatedProjects }))}
             />
           </div>
 
