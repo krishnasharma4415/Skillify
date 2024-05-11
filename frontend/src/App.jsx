@@ -5,7 +5,6 @@ import About from './pages/About';
 import Explore from './pages/Explore';
 import Profile from './pages/Profile';
 import SkillExchangePage from './pages/SkillExchange';
-import './App.css'
 
 function App() {
 
