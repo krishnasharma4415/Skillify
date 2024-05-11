@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import UserCard from '../components/UserCard';
 import { userListProps } from '../components/UserList';
 import UserSkillsData from '../components/UserSkillsData';
 import { FaReddit } from "react-icons/fa6";
