@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Chat from "../components/Chat";
 // import { useHistory } from 'react-router-dom';
 import { IoIosChatbubbles } from "react-icons/io";
@@ -25,60 +25,15 @@ function Profile() {
     return null;
   }
 
-  const [skillsList, setSkillsList] = useState([
-    "JavaScript",
-    "React",
-    "Node.js",
-    "Python",
-    "Java",
-    "C++",
-    "C#",
-    "Machine Learning",
-    "Web Development",
-    "Mobile Development",
-    "Data Science",
-    "Cloud Computing",
-    "UI/UX Design",
-    "Ethical Hacking",
-    "Cybersecurity",
-    "DevOps",
-    "Database Management",
-    "Software Testing",
-    "Project Management",
-    "Agile Methodology",
-    "Git",
-    "HTML",
-    "CSS",
-    "Bootstrap",
-    "Material UI",
-    "Angular",
-    "Vue.js",
-    "SQL",
-    "NoSQL",
-    "Cloud Platforms (AWS, Azure, GCP)",
-    "API Development",
-    "Microservices Architecture",
-    "Content Management Systems (CMS)",
-    "SEO",
-    "Social Media Marketing",
-    "Content Marketing",
-    "Copywriting",
-    "Graphic Design",
-    "User Experience (UX) Research",
-    "Usability Testing",
-    "Information Security",
-    "Network Security",
-    "Cloud Security",
-    "Blockchain",
-    "Internet of Things (IoT)",
-    "Artificial Intelligence (AI)",
-    "Natural Language Processing (NLP)",
-  ]);
-
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setProfileData((prevData) => ({ ...prevData, [name]: value }));
-  };
+  const [skills, setSkills] = useState([]);
+  useEffect(() => {
+    fetch('http://localhost:5000/api/skills')
+      .then(response => response.json())
+      .then(data => {
+        setSkills(data);
+      })
+      .catch(error => console.error('Error fetching skills:', error));
+  }, []);
 
   const handleEditClick = (title) => {
     if (editingThumbnail === title) return;
@@ -95,7 +50,6 @@ function Profile() {
     });
   };
 
-
   const handleRemoveSkill = (skill, type) => {
     setProfileData((prevData) => ({
       ...prevData,
@@ -103,18 +57,11 @@ function Profile() {
     }));
   };
 
-  const SkillThumbnail = ({ title, content, skills }) => {
+  const SkillThumbnail = ({ title, content, skill }) => {
     const isEditing = editingThumbnail === title;
 
     return (
-      <div
-        className={`thumbnail bg-gray-800 p-4 overflow-y-scroll max-h-2/4 w-80 rounded shadow-md ${isEditing ? 'border border-gray-500' : ''
-          }`}
-        onClick={(event) => {
-          handleEditClick(title);
-          event.stopPropagation();
-        }}
-      >
+      <div className={`thumbnail bg-gray-800 p-4 overflow-y-scroll max-h-2/4 w-80 rounded shadow-md ${isEditing ? 'border border-gray-500' : ''}`}>
         <div className="flex justify-between text-white">
           <h3>{title}</h3>
           <button className="">
@@ -123,20 +70,19 @@ function Profile() {
               onChange={(event) => handleAddSkill(event.target.value, title)}
             >
               <option value="">-- Add Skill --</option>
-              {skillsList.map((skill) => (
-                <option key={skill} value={skill}>
-                  {skill}
+              {skills.map((skill) => (
+                <option key={skill._id} value={skill.name}>
+                  {skill.name}
                 </option>
               ))}
             </select>
           </button>
         </div>
         <div className="xh-80 flex flex-wrap">
-          {skills.map((skill) => (
-            <button key={skill} className="skill-chip flex items-center mr-2 mb-2 bg-gray-200 p-2 rounded-full hover:bg-gray-300">
-              {skill}
-              <button className="ml-2 w-4 fill-current text-red-500"
-                onClick={() => handleRemoveSkill(skill, title)}>
+          {content && content.split(',').map((skillName) => (
+            <button key={skillName} className="skill-chip flex items-center mr-2 mb-2 bg-gray-200 p-2 rounded-full hover:bg-gray-300">
+              {skillName}
+              <button className="ml-2 w-4 fill-current text-red-500" onClick={() => handleRemoveSkill(skillName, title)}>
                 x
               </button>
             </button>
@@ -145,6 +91,7 @@ function Profile() {
       </div>
     );
   };
+
 
   const Thumbnail = ({ title, content, handleEditClick }) => {
     const [isEditing, setIsEditing] = useState(false);
@@ -277,12 +224,12 @@ function Profile() {
             <SkillThumbnail
               title="DesiredSkills"
               content={profileData.DesiredSkills.length ? profileData.DesiredSkills.join(', ') : null}
-              skills={profileData.DesiredSkills}
+              skill={profileData.DesiredSkills}
             />
             <SkillThumbnail
               title="OfferedSkills"
               content={profileData.OfferedSkills.length ? profileData.OfferedSkills.join(', ') : null}
-              skills={profileData.OfferedSkills}
+              skill={profileData.OfferedSkills}
             />
           </div>
           <div className="flex h-80 justify-between m-4">
